@@ -224,7 +224,6 @@ MARKDOWN_TEMPLATE = os.path.join(os.path.dirname(__file__), "markdown.jinja2")
     default=MARKDOWN_TEMPLATE,
 )
 @click.option("--annotations/--no-annotations", default=False)
-@click.option("--front-matter/--no-front-matter", default=True)
 @click.option("--dry-run/--no-dry-run", default=False)
 @click.option("--force/--no-force", default=False)
 @click.option("--front-matter-fields", type=str, help="title,date,layout,category")
@@ -250,7 +249,6 @@ def build_markdown(
     annotations,
     dry_run,
     force,
-    front_matter,
     defaults,
     aliases,
     overrides,
@@ -284,7 +282,7 @@ def build_markdown(
             except json.decoder.JSONDecodeError:
                 v = value
             context[key] = v
-        if front_matter and front_matter_fields:
+        if front_matter_fields:
             context["front_matter"] = {}
             for field in front_matter_fields.split(","):
                 field = field.strip()
