@@ -284,7 +284,8 @@ def build_markdown(
 {{front_matter|tojson(indent=2)}}
 ---{% endif %}{% if not front_matter %}# {{ title }}
 
-{% endif %}{{ fragments_text_content }}"""
+{% endif %}
+{{ fragments_text_content }}"""
         j2_template = jinja2.Environment(loader=jinja2.BaseLoader).from_string(
             template
         )
