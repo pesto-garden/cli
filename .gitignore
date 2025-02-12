@@ -1,0 +1,8 @@
+*.egg-info
+testblog
+data
+venv
+reliure.yml
+*.epub
+kindlegen
+docs.json
