@@ -209,20 +209,12 @@ def write_file(filename, content, output_dir, replace=False):
         f.write(content)
 
 
-MARKDOWN_TEMPLATE = os.path.join(os.path.dirname(__file__), "markdown.jinja2")
-
-
 @cli.command("build-markdown")
 @click.argument("input", type=click.File("r"))
 @click.argument(
     "output_dir", type=click.Path(dir_okay=True, file_okay=False, exists=True)
 )
 @click.option("--file-name", type=str, default="{created_at}.md")
-@click.option(
-    "--template",
-    type=click.Path(file_okay=True, exists=True, dir_okay=False),
-    default=MARKDOWN_TEMPLATE,
-)
 @click.option("--annotations/--no-annotations", default=False)
 @click.option("--dry-run/--no-dry-run", default=False)
 @click.option("--force/--no-force", default=False)
@@ -244,7 +236,6 @@ MARKDOWN_TEMPLATE = os.path.join(os.path.dirname(__file__), "markdown.jinja2")
 def build_markdown(
     input,
     output_dir,
-    template,
     file_name,
     annotations,
     dry_run,
@@ -289,11 +280,14 @@ def build_markdown(
                 if field in context:
                     context["front_matter"][field] = context[field]
 
-        with open(template) as f:
-            content = f.read()
-            j2_template = jinja2.Environment(loader=jinja2.BaseLoader).from_string(
-                content
-            )
+        template ="""{% if front_matter %}---
+{{front_matter|tojson(indent=2)}}
+---{% endif %}{% if not front_matter %}# {{ title }}
+
+{% endif %}{{ fragments_text_content }}"""
+        j2_template = jinja2.Environment(loader=jinja2.BaseLoader).from_string(
+            template
+        )
 
         body = j2_template.render(**context)
         if not annotations:

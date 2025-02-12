@@ -1,5 +1,0 @@
-{% if front_matter %}---
-{{front_matter|tojson(indent=2)}}
----{% endif %}{% if not front_matter %}# {{ title }}
-
-{% endif %}{{ fragments_text_content }}
