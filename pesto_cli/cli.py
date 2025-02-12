@@ -94,7 +94,6 @@ def match_lookup(value, lookup, lookup_value):
 
         return value > lookup_value
     if lookup == "gte":
-        print("HELLO", value, lookup_value)
         return value >= lookup_value
     if lookup == "lt":
         return value < lookup_value
@@ -143,10 +142,11 @@ def match(document, f):
 
 
 def keep_document(document, filter, exclude):
-    if filter:
-        return all((match(document, f) for f in filter))
-    if exclude:
-        return not any((match(document, f) for f in exclude))
+   
+    if filter and not all((match(document, f) for f in filter)):
+        return False
+    if exclude and any((match(document, f) for f in exclude)):     
+        return False
     return True
 
 
