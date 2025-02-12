@@ -1,0 +1,5 @@
+{% if front_matter %}---
+{{front_matter|tojson(indent=2)}}
+---
+{% endif %}
+{{ fragments_text_content }}

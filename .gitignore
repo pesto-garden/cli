@@ -5,4 +5,5 @@ venv
 reliure.yml
 *.epub
 kindlegen
-docs.json
+*.json
+build
