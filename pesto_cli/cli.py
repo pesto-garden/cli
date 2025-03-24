@@ -253,7 +253,7 @@ def build_markdown(
     click.echo(f"Building {len(documents)} documents", err=True)
     for document in documents:
 
-        context = {key: value or "" for key, value in flatten(document).items()}
+        context = {key: value for key, value in flatten(document).items()}
         for alias in aliases:
             key, value = alias.split("=")
             if value in context:
